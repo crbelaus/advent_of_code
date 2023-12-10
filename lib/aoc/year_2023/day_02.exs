@@ -1,20 +1,21 @@
 defmodule AoC.Year2023.Day02 do
   def solve_part_1(input) do
-    for {line, index} <- Enum.with_index(input, 1), reduce: 0 do
-      acc ->
-        game_possible? =
-          line
-          |> extract_cube_sets()
-          |> Enum.all?(&set_possible?/1)
+    input
+    |> Enum.with_index(1)
+    |> Enum.reduce(0, fn {line, index}, acc ->
+      game_possible? =
+        line
+        |> extract_cube_sets()
+        |> Enum.all?(&set_possible?/1)
 
-        if game_possible?, do: acc + index, else: acc
-    end
+      if game_possible?, do: acc + index, else: acc
+    end)
+  end
 
-    defp set_possible?(cube_set) do
-      cube_set
-      |> normalize_colors()
-      |> Enum.all?(fn {color, num} -> num <= available_cubes(color) end)
-    end
+  defp set_possible?(cube_set) do
+    cube_set
+    |> normalize_colors()
+    |> Enum.all?(fn {color, num} -> num <= available_cubes(color) end)
   end
 
   defp available_cubes("blue"), do: 14
@@ -65,10 +66,10 @@ defmodule AoC.Year2023.Day02 do
   end
 end
 
-AdventOfCode.input("2023", "02")
+AoC.input("2023", "02")
 |> AoC.Year2023.Day02.solve_part_1()
 |> IO.inspect(label: "Part 1")
 
-AdventOfCode.input("2023", "02")
+AoC.input("2023", "02")
 |> AoC.Year2023.Day02.solve_part_2()
 |> IO.inspect(label: "Part 2")
